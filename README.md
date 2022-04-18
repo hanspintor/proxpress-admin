@@ -1,1 +1,1 @@
-# proxpress-admin
+# PROXpress Admin
