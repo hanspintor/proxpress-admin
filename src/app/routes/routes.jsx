@@ -6,6 +6,10 @@ import dashboardRoutes from 'app/views/dashboard/DashboardRoutes'
 import sessionRoutes from 'app/views/sessions/SessionRoutes'
 import MatxLayout from '../components/MatxLayout/MatxLayout'
 import { Navigate } from 'react-router-dom'
+import couriersRoutes from 'app/views/couriers/CourierRoutes'
+import pricesRoutes from 'app/views/prices/PricesRoutes'
+import reportsRoutes from 'app/views/reports/ReportsRoutes'
+import cashoutsRoutes from 'app/views/cashouts/CashoutsRoutes'
 
 export const AllPages = () => {
     const all_routes = [
@@ -15,12 +19,18 @@ export const AllPages = () => {
                     <MatxLayout />
                 </AuthGuard>
             ),
-            children: [...dashboardRoutes, ...chartsRoute, ...materialRoutes],
+            children: [
+                ...dashboardRoutes,
+                ...couriersRoutes,
+                ...pricesRoutes,
+                ...reportsRoutes,
+                ...cashoutsRoutes,
+            ],
         },
         ...sessionRoutes,
         {
             path: '/',
-            element: <Navigate to="dashboard/default" />,
+            element: <Navigate to="dashboard" />,
         },
         {
             path: '*',

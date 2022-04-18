@@ -1,27 +1,27 @@
 export const navigations = [
     {
         name: 'Dashboard',
-        path: '/dashboard/default',
+        path: '/dashboard',
         icon: 'dashboard',
     },
     {
-        name: 'Courier',
-        path: '/material/table',
+        name: 'Couriers',
+        path: '/couriers',
         icon: 'local_shipping',
     },
     {
         name: 'Delivery Prices',
-        path: '/material/table',
+        path: '/prices',
         icon: 'price_change',
     },
     {
         name: 'Reports',
-        path: '/material/table',
+        path: '/reports',
         icon: 'warning',
     },
     {
         name: 'Cash-outs',
-        path: '/material/table',
+        path: '/cashouts',
         icon: 'account_balance_wallet',
     },
 ]
