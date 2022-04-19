@@ -1,7 +1,13 @@
-import React, { createContext, useEffect, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer, useState } from 'react'
 import jwtDecode from 'jwt-decode'
 import axios from 'axios.js'
 import { MatxLoading } from 'app/components'
+import {
+    onAuthStateChanged,
+    signInWithEmailAndPassword,
+    signOut,
+} from 'firebase/auth'
+import { auth } from 'firebase'
 
 const initialState = {
     isAuthenticated: false,
@@ -76,56 +82,30 @@ const AuthContext = createContext({
     ...initialState,
     method: 'JWT',
     login: () => Promise.resolve(),
-    logout: () => { },
-    register: () => Promise.resolve(),
+    logout: () => {},
 })
 
 export const AuthProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
+    const [currentUser, setCurrentUser] = useState()
 
-    const login = async (email, password) => {
-        const response = await axios.post('/api/auth/login', {
-            email,
-            password,
-        })
-        const { accessToken, user } = response.data
-
-        setSession(accessToken)
-
-        dispatch({
-            type: 'LOGIN',
-            payload: {
-                user,
-            },
-        })
+    const login = async (auth, email, password) => {
+        // const response = await axios.post('/api/auth/login', {
+        //     email,
+        //     password,
+        // })
+        const response = await signInWithEmailAndPassword(auth, email, password)
+        console.log(response.user.uid)
     }
 
-    const register = async (email, username, password) => {
-        const response = await axios.post('/api/auth/register', {
-            email,
-            username,
-            password,
-        })
-
-        const { accessToken, user } = response.data
-
-        setSession(accessToken)
-
-        dispatch({
-            type: 'REGISTER',
-            payload: {
-                user,
-            },
-        })
-    }
-
-    const logout = () => {
-        setSession(null)
-        dispatch({ type: 'LOGOUT' })
+    const logout = async () => {
+        await signOut(auth)
+        // setSession(null)
+        // dispatch({ type: 'LOGOUT' })
     }
 
     useEffect(() => {
-        ; (async () => {
+        ;(async () => {
             try {
                 const accessToken = window.localStorage.getItem('accessToken')
 
@@ -163,6 +143,13 @@ export const AuthProvider = ({ children }) => {
         })()
     }, [])
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setCurrentUser(user)
+        })
+        return unsubscribe
+    }, [])
+
     if (!state.isInitialised) {
         return <MatxLoading />
     }
@@ -174,7 +161,7 @@ export const AuthProvider = ({ children }) => {
                 method: 'JWT',
                 login,
                 logout,
-                register,
+                currentUser,
             }}
         >
             {children}

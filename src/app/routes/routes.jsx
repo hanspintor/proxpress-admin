@@ -1,7 +1,5 @@
 import AuthGuard from 'app/auth/AuthGuard'
 import NotFound from 'app/views/sessions/NotFound'
-import chartsRoute from 'app/views/charts/ChartsRoute'
-import materialRoutes from 'app/views/material-kit/MaterialRoutes'
 import dashboardRoutes from 'app/views/dashboard/DashboardRoutes'
 import sessionRoutes from 'app/views/sessions/SessionRoutes'
 import MatxLayout from '../components/MatxLayout/MatxLayout'
@@ -14,11 +12,12 @@ import cashoutsRoutes from 'app/views/cashouts/CashoutsRoutes'
 export const AllPages = () => {
     const all_routes = [
         {
-            element: (
-                <AuthGuard>
-                    <MatxLayout />
-                </AuthGuard>
-            ),
+            // element: (
+            //     <AuthGuard>
+            //         <MatxLayout />
+            //     </AuthGuard>
+            // ),
+            element: <MatxLayout />,
             children: [
                 ...dashboardRoutes,
                 ...couriersRoutes,

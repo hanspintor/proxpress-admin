@@ -5,19 +5,19 @@ import { Navigate, useLocation } from 'react-router-dom'
 import AppContext from '../contexts/AppContext'
 import { AllPages } from '../routes/routes'
 
-const getUserRoleAuthStatus = (pathname, user, routes) => {
-    if (!user) {
-        return false
-    }
-    const matched = routes.find((r) => r.path === pathname)
+// const getUserRoleAuthStatus = (pathname, user, routes) => {
+//     if (!user) {
+//         return false
+//     }
+//     const matched = routes.find((r) => r.path === pathname)
 
-    const authenticated =
-        matched && matched.auth && matched.auth.length
-            ? matched.auth.includes(user.role)
-            : true
-    console.log(matched, user)
-    return authenticated
-}
+//     const authenticated =
+//         matched && matched.auth && matched.auth.length
+//             ? matched.auth.includes(user.role)
+//             : true
+//     console.log(matched, user)
+//     return authenticated
+// }
 
 const AuthGuard = ({ children }) => {
     const { isAuthenticated, user } = useAuth()
@@ -30,18 +30,18 @@ const AuthGuard = ({ children }) => {
 
     console.log(user)
 
-    const isUserRoleAuthenticated = getUserRoleAuthStatus(
-        pathname,
-        user,
-        routes
-    )
-    let authenticated = isAuthenticated && isUserRoleAuthenticated
+    // const isUserRoleAuthenticated = getUserRoleAuthStatus(
+    //     pathname,
+    //     user,
+    //     routes
+    // )
+    // let authenticated = isAuthenticated && isUserRoleAuthenticated
 
     // IF YOU NEED ROLE BASED AUTHENTICATION,
     // UNCOMMENT ABOVE TWO LINES, getUserRoleAuthStatus METHOD AND user VARIABLE
     // AND COMMENT OUT BELOW LINE
 
-    // let authenticated = isAuthenticated
+    let authenticated = isAuthenticated
 
     useEffect(() => {
         if (previouseRoute !== null) setPreviousRoute(pathname)

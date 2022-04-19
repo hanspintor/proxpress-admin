@@ -18,6 +18,7 @@ import {
     Hidden,
 } from '@mui/material'
 import { topBarHeight } from 'app/utils/constant'
+import { auth } from 'firebase'
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     color: theme.palette.text.primary,
@@ -99,6 +100,7 @@ const Layout1Topbar = () => {
             },
         })
     }
+    console.log(user)
 
     const handleSidebarToggle = () => {
         let { layout1Settings } = settings
@@ -136,13 +138,10 @@ const Layout1Topbar = () => {
                             <UserMenu>
                                 <Hidden xsDown>
                                     <Span>
-                                        Hi <strong>{user.name}</strong>
+                                        <strong>{user?.user.email}</strong>
                                     </Span>
                                 </Hidden>
-                                <Avatar
-                                    src={user.avatar}
-                                    sx={{ cursor: 'pointer' }}
-                                />
+                                <Avatar sx={{ cursor: 'pointer' }} />
                             </UserMenu>
                         }
                     >
@@ -151,16 +150,6 @@ const Layout1Topbar = () => {
                                 <Icon> home </Icon>
                                 <Span> Home </Span>
                             </Link>
-                        </StyledItem>
-                        <StyledItem>
-                            <Link to="/page-layouts/user-profile">
-                                <Icon> person </Icon>
-                                <Span> Profile </Span>
-                            </Link>
-                        </StyledItem>
-                        <StyledItem>
-                            <Icon> settings </Icon>
-                            <Span> Settings </Span>
                         </StyledItem>
                         <StyledItem onClick={logout}>
                             <Icon> power_settings_new </Icon>

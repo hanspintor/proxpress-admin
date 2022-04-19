@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom'
 import { Box, styled, useTheme } from '@mui/system'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Paragraph, Span } from 'app/components/Typography'
+import { auth } from 'firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 const FlexBox = styled(Box)(() => ({
     display: 'flex',
@@ -53,11 +55,12 @@ const JwtLogin = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [userInfo, setUserInfo] = useState({
-        email: 'jason@ui-lib.com',
-        password: 'dummyPass',
+        email: 'hans@email.com',
+        password: 'password',
     })
+
     const [message, setMessage] = useState('')
-    const { login } = useAuth()
+    const { login, currentUser } = useAuth()
 
     const handleChange = ({ target: { name, value } }) => {
         let temp = { ...userInfo }
@@ -72,7 +75,13 @@ const JwtLogin = () => {
     const handleFormSubmit = async (event) => {
         setLoading(true)
         try {
-            await login(userInfo.email, userInfo.password)
+            const user = await login(auth, userInfo.email, userInfo.password)
+            // const user = await signInWithEmailAndPassword(
+            //     auth,
+            //     userInfo.email,
+            //     userInfo.password
+            // )
+            await console.log(currentUser.user)
             navigate('/')
         } catch (e) {
             console.log(e)
@@ -123,29 +132,6 @@ const JwtLogin = () => {
                                     validators={['required']}
                                     errorMessages={['this field is required']}
                                 />
-                                <FormControlLabel
-                                    sx={{ mb: '12px', maxWidth: 288 }}
-                                    name="agreement"
-                                    onChange={handleChange}
-                                    control={
-                                        <Checkbox
-                                            size="small"
-                                            onChange={({
-                                                target: { checked },
-                                            }) =>
-                                                handleChange({
-                                                    target: {
-                                                        name: 'agreement',
-                                                        value: checked,
-                                                    },
-                                                })
-                                            }
-                                            checked={userInfo.agreement || true}
-                                        />
-                                    }
-                                    label="Remeber me"
-                                />
-
                                 {message && (
                                     <Paragraph sx={{ color: textError }}>
                                         {message}
@@ -169,24 +155,7 @@ const JwtLogin = () => {
                                             />
                                         )}
                                     </Box>
-                                    <Span sx={{ mr: 1, ml: '20px' }}>or</Span>
-                                    <Button
-                                        sx={{ textTransform: 'capitalize' }}
-                                        onClick={() =>
-                                            navigate('/session/signup')
-                                        }
-                                    >
-                                        Sign up
-                                    </Button>
                                 </FlexBox>
-                                <Button
-                                    sx={{ color: textPrimary }}
-                                    onClick={() =>
-                                        navigate('/session/forgot-password')
-                                    }
-                                >
-                                    Forgot password?
-                                </Button>
                             </ValidatorForm>
                         </ContentBox>
                     </Grid>
